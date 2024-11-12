@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function send_query() {
-
+    // change
     console.log("send query...")
 
     document.getElementById('results').innerHTML = '';
