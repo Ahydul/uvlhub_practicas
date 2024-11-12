@@ -22,8 +22,8 @@ jobs:
         if: ${{ github.event_name == 'pull_request_target' || github.event_name == 'issues' }}
         continue-on-error: true
         with:
-          project-url: https://github.com/orgs/us-ferferga/projects/2
-          github-token: ${{ secrets.DECIDE_PROJECT_SECRET }}
+          project-url: https://github.com/users/Ahydul/projects/4
+          github-token: ${{ secrets.PROJECT_SECRET }}
 
   label:
     name: Etiquetado 🏷️
