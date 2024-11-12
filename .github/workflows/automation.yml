@@ -1,0 +1,42 @@
+name: Automation
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  pull_request_target:
+  issues:
+    types: 
+      - opened
+      - reopened
+      - transferred
+
+jobs:
+  project:
+    name: Update project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add to project
+        uses: actions/add-to-project@v0.5.0
+        if: ${{ github.event_name == 'pull_request_target' || github.event_name == 'issues' }}
+        continue-on-error: true
+        with:
+          project-url: https://github.com/orgs/us-ferferga/projects/2
+          github-token: ${{ secrets.DECIDE_PROJECT_SECRET }}
+
+  label:
+    name: Etiquetado 🏷️
+    runs-on: ubuntu-latest
+    steps:
+      - name: Etiquetar PR dependiendo de los archivos modificados
+        uses: actions/labeler@v5
+        if: ${{ github.event_name == 'pull_request_target' }}
+        continue-on-error: true
+
+      - name: Comprobar todos los PR para conflictos ⛔
+        uses: eps1lon/actions-label-merge-conflict@v2.1.0
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          dirtyLabel: "conflictos"
+          repoToken: ${{ github.token }}
